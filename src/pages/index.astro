@@ -8,6 +8,7 @@ const enabledGalleryImages = content.gallery.filter((image) => image.enabled);
 const enabledMaintenanceItems = content.maintenance.filter((item) => item.enabled);
 const formatPrice = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
 const canonicalUrl = publicUrl(content.site.publicBaseUrl);
+const social = content.social;
 const vehicleName = `${content.vehicle.make} ${content.vehicle.model}${content.vehicle.version ? ` ${content.vehicle.version}` : ''}`;
 const vehicleYears = `${content.vehicle.year.manufacture}/${content.vehicle.year.model}`;
 const vehicleMileage = `${content.vehicle.mileageKm.toLocaleString('pt-BR')} km`;
@@ -21,6 +22,16 @@ const vehicleMileage = `${content.vehicle.mileageKm.toLocaleString('pt-BR')} km`
     <link rel="canonical" href={canonicalUrl} />
     <title>{content.site.defaultMetadata.title}</title>
     <meta name="description" content={content.site.defaultMetadata.description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={social.title} />
+    <meta property="og:description" content={social.description} />
+    {social.image && <meta property="og:image" content={social.image} />}
+    {social.image && social.imageAlt && <meta property="og:image:alt" content={social.imageAlt} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={social.title} />
+    <meta name="twitter:description" content={social.description} />
+    {social.image && <meta name="twitter:image" content={social.image} />}
   </head>
   <body>
     <main>

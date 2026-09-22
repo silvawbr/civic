@@ -43,6 +43,45 @@ const publicBaseUrl = z
   })
   .transform((value) => value.replace(/\/$/, ''));
 
+const socialImage = z.string().trim().min(1).superRefine((value, context) => {
+  if (value.startsWith('/')) {
+    if (value.startsWith('//') || value.includes('\\')) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'must be a public path beginning with a single slash',
+      });
+    }
+    return;
+  }
+
+  let parsed: URL;
+  try {
+    parsed = new URL(value);
+  } catch {
+    context.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'must be an absolute http or https URL or a relative public path',
+    });
+    return;
+  }
+
+  if (!['http:', 'https:'].includes(parsed.protocol)) {
+    context.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'must use the http or https protocol',
+    });
+  }
+});
+
+export const SocialConfigSchema = z
+  .object({
+    title: nullableText,
+    description: nullableText,
+    image: socialImage.nullable().optional().default(null),
+    imageAlt: nullableText,
+  })
+  .strict();
+
 export const SiteConfigSchema = z
   .object({
     title: z.string().trim().min(1),
@@ -54,6 +93,7 @@ export const SiteConfigSchema = z
         description: z.string().trim().min(1),
       })
       .strict(),
+    social: SocialConfigSchema.optional().default({}),
     location: z.string().trim().min(1),
     description: nullableText,
   })
@@ -229,6 +269,7 @@ export const RawContentSchema = z
   .strict();
 
 export type SiteConfig = z.infer<typeof SiteConfigSchema>;
+export type SocialConfig = z.infer<typeof SocialConfigSchema>;
 export type VehicleConfig = z.infer<typeof VehicleConfigSchema>;
 export type SectionsConfig = z.infer<typeof SectionsConfigSchema>;
 export type GalleryConfig = z.infer<typeof GalleryConfigSchema>;
@@ -237,8 +278,16 @@ export type LinksConfig = z.infer<typeof LinksConfigSchema>;
 export type RawContent = z.infer<typeof RawContentSchema>;
 export type HeroConfig = z.infer<typeof HeroConfigSchema>;
 
+export type SocialMetadata = {
+  title: string;
+  description: string;
+  image: string | null;
+  imageAlt: string | null;
+};
+
 export type SiteContent = {
   site: SiteConfig;
+  social: SocialMetadata;
   vehicle: VehicleConfig;
   sections: SectionsConfig['sections'];
   hero: SectionsConfig['hero'];

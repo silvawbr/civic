@@ -41,7 +41,7 @@ After the physical sticker is printed, the `/q` URL and QR payload must not chan
 
 Advertisement content lives in `src/content/` and is loaded by `src/lib/content/loader.ts`:
 
-- `site.yaml`: title, language, metadata, general public location, and description.
+- `site.yaml`: title, language, metadata, social-sharing metadata, general public location, and description.
 - `vehicle.yaml`: the single Civic's identity, year, price, mileage, location, and optional known details.
 - `sections.yaml`: supported section visibility/order plus Hero options.
 - `gallery.yaml`: main vehicle-gallery entries.
@@ -53,3 +53,9 @@ Schemas in `src/lib/content/schema.ts` validate each file before the normalized 
 Unknown section IDs, invalid primitive types, invalid supplied URLs, duplicate IDs, and malformed local image paths fail with contextual errors. Optional values normalize to `null` or empty arrays where appropriate.
 
 Place future assets in `public/images/vehicle/` and `public/images/maintenance/`. Final photos are intentionally not included yet.
+
+## Social-sharing preview
+
+The optional `site.social` section in `src/content/site.yaml` controls the root page's Open Graph and Twitter/X metadata. `title` and `description` fall back to `site.defaultMetadata`; `image` and `imageAlt` are optional. Absolute `http`/`https` image URLs and relative public paths such as `/images/social/vehicle-share.jpg` are supported. Relative paths are resolved against `site.publicBaseUrl` before rendering.
+
+The preferred future project-owned asset is `public/images/social/vehicle-share.jpg`, with recommended dimensions of 1200x630, JPG or PNG format, and an approximate 1.91:1 aspect ratio. The current configuration uses a temporary remote vehicle image; it should be replaced in configuration later without changing the page metadata implementation.

@@ -4,5 +4,10 @@ publicBaseUrl: https://civic-se.vercel.app
 defaultMetadata:
   title: Honda Civic à venda
   description: Informações públicas sobre o Honda Civic anunciado para venda.
+social:
+  title: Honda Civic 2014/2014 à venda
+  description: Veja fotos, informações e detalhes deste Honda Civic à venda em Grande Aracaju/SE.
+  image: https://s3.amazonaws.com/altimus2.arquivos.prod/d35aca4c-3a76-48b0-8dcb-4334c5f4f73e/fotos/veiculo/ab1b5335ea1540c7a381bf4b512af5f9_1780921220209.jpg
+  imageAlt: Honda Civic 2014/2014 à venda
 location: Grande Aracaju/SE
 description: Anúncio particular com informações do veículo e registros de cuidado.

@@ -2,6 +2,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { parse } from 'yaml';
 import { type ZodIssue } from 'zod';
+import { publicUrl } from '../site-url';
 import {
   GalleryConfigSchema,
   LinksConfigSchema,
@@ -11,6 +12,7 @@ import {
   SiteConfigSchema,
   VehicleConfigSchema,
   type RawContent,
+  type SocialMetadata,
   type SiteContent,
 } from './schema';
 
@@ -75,8 +77,18 @@ export function normalizeContent(raw: unknown, source = 'content configuration')
   const sortByOrder = <T extends { order: number; id: string }>(items: T[]): T[] =>
     [...items].sort((left, right) => left.order - right.order || left.id.localeCompare(right.id));
 
+  const social: SocialMetadata = {
+    title: result.data.site.social.title ?? result.data.site.defaultMetadata.title,
+    description: result.data.site.social.description ?? result.data.site.defaultMetadata.description,
+    image: result.data.site.social.image
+      ? publicUrl(result.data.site.publicBaseUrl, result.data.site.social.image)
+      : null,
+    imageAlt: result.data.site.social.imageAlt,
+  };
+
   return {
     site: result.data.site,
+    social,
     vehicle: result.data.vehicle,
     sections: sortByOrder(result.data.sections.sections),
     hero: result.data.sections.hero,
