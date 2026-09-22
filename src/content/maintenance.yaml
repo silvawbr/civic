@@ -1,0 +1,10 @@
+items:
+  - id: tires
+    enabled: true
+    order: 10
+    title: Pneus
+    date: null
+    mileageKm: null
+    description: null
+    details: []
+    images: []

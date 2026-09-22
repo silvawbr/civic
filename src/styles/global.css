@@ -1,0 +1,172 @@
+:root {
+  color-scheme: light;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #18212b;
+  background: #f4f6f8;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-width: 0;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+h1,
+h2,
+h3,
+p,
+dl,
+ol {
+  margin-top: 0;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.15;
+}
+
+.page-shell {
+  width: min(100% - 2rem, 70rem);
+  margin: 0 auto;
+  padding: 2rem 0 4rem;
+}
+
+.intro,
+.summary,
+.diagnostics {
+  padding: 1.25rem;
+  border: 1px solid #d9e0e7;
+  border-radius: 1rem;
+  background: #fff;
+}
+
+.intro {
+  margin-bottom: 1rem;
+}
+
+.summary {
+  display: grid;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.eyebrow {
+  margin-bottom: 0.5rem;
+  color: #586779;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+h1 {
+  max-width: 18ch;
+  margin-bottom: 0.75rem;
+  font-size: clamp(2rem, 8vw, 3.5rem);
+}
+
+h2 {
+  margin-bottom: 0.75rem;
+  font-size: clamp(1.35rem, 4vw, 2rem);
+}
+
+h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+p {
+  max-width: 68ch;
+  margin-bottom: 0;
+  color: #455466;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 0;
+}
+
+.facts div {
+  min-width: 0;
+  padding: 0.75rem;
+  border-radius: 0.65rem;
+  background: #eef2f5;
+}
+
+dt {
+  color: #586779;
+  font-size: 0.8rem;
+}
+
+dd {
+  margin: 0.25rem 0 0;
+  overflow-wrap: anywhere;
+  font-weight: 700;
+}
+
+.diagnostics {
+  background: #f9fbfc;
+}
+
+.diagnostic-grid {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.diagnostic-grid > div {
+  min-width: 0;
+  padding-top: 1rem;
+  border-top: 1px solid #d9e0e7;
+}
+
+ol {
+  margin-bottom: 0;
+  padding-left: 1.25rem;
+}
+
+li span {
+  color: #586779;
+}
+
+@media (min-width: 40rem) {
+  .page-shell {
+    padding-top: 4rem;
+  }
+
+  .intro,
+  .summary,
+  .diagnostics {
+    padding: 2rem;
+  }
+
+  .summary {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    align-items: start;
+  }
+
+  .diagnostic-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 64rem) {
+  .diagnostic-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

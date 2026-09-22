@@ -1,0 +1,12 @@
+whatsapp:
+  enabled: false
+  url: null
+  message: Olá. Vi o anúncio do Honda Civic e gostaria de mais informações.
+
+olx:
+  enabled: false
+  url: null
+
+webmotors:
+  enabled: false
+  url: null

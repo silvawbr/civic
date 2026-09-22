@@ -1,0 +1,12 @@
+images:
+  - id: front
+    src: /images/vehicle/front.jpg
+    alt: Honda Civic visto de frente
+    enabled: true
+    order: 10
+
+  - id: rear
+    src: /images/vehicle/rear.jpg
+    alt: Honda Civic visto pela traseira
+    enabled: true
+    order: 20

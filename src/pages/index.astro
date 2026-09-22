@@ -1,0 +1,88 @@
+---
+import '../styles/global.css';
+import { content } from '../lib/content';
+
+const enabledSections = content.sections.filter((section) => section.enabled);
+const enabledGalleryImages = content.gallery.filter((image) => image.enabled);
+const enabledMaintenanceItems = content.maintenance.filter((item) => item.enabled);
+const formatPrice = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+---
+
+<!doctype html>
+<html lang={content.site.language}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{content.site.defaultMetadata.title}</title>
+    <meta name="description" content={content.site.defaultMetadata.description} />
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="intro">
+        <p class="eyebrow">Static content foundation</p>
+        <h1>{content.site.title}</h1>
+        <p>{content.site.description}</p>
+      </header>
+
+      <section class="summary" aria-labelledby="vehicle-heading">
+        <div>
+          <p class="eyebrow">Configured vehicle</p>
+          <h2 id="vehicle-heading">
+            {content.vehicle.make} {content.vehicle.model}
+            {content.vehicle.version ? ` ${content.vehicle.version}` : ''}
+          </h2>
+        </div>
+        <dl class="facts">
+          <div>
+            <dt>Price</dt>
+            <dd>{formatPrice.format(content.vehicle.price)}</dd>
+          </div>
+          <div>
+            <dt>Mileage</dt>
+            <dd>{content.vehicle.mileageKm.toLocaleString('pt-BR')} km</dd>
+          </div>
+          <div>
+            <dt>Year</dt>
+            <dd>{content.vehicle.year.manufacture}/{content.vehicle.year.model}</dd>
+          </div>
+          <div>
+            <dt>Location</dt>
+            <dd>{content.vehicle.location}</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="diagnostics" aria-labelledby="diagnostics-heading">
+        <div>
+          <p class="eyebrow">Development representation</p>
+          <h2 id="diagnostics-heading">Validated content model</h2>
+          <p>
+            This temporary page proves that YAML content is parsed, validated, normalized, and
+            statically rendered. It is not the final sale experience.
+          </p>
+        </div>
+
+        <div class="diagnostic-grid">
+          <div>
+            <h3>Enabled sections</h3>
+            <ol>
+              {enabledSections.map((section) => <li>{section.id} <span>({section.order})</span></li>)}
+            </ol>
+          </div>
+          <div>
+            <h3>Gallery entries</h3>
+            <p>{enabledGalleryImages.length} enabled / {content.gallery.length} configured</p>
+          </div>
+          <div>
+            <h3>Maintenance evidence</h3>
+            <p>{enabledMaintenanceItems.length} enabled / {content.maintenance.length} configured</p>
+          </div>
+          <div>
+            <h3>External links</h3>
+            <p>{Object.values(content.links).filter((link) => link.enabled).length} enabled</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,29 @@
+sections:
+  - id: hero
+    enabled: true
+    order: 10
+
+  - id: vehicle-details
+    enabled: true
+    order: 20
+
+  - id: gallery
+    enabled: true
+    order: 30
+
+  - id: maintenance
+    enabled: true
+    order: 40
+
+  - id: transparency
+    enabled: true
+    order: 50
+
+hero:
+  enabled: true
+  showPrice: true
+  showMileage: true
+  showYear: true
+  showLocation: true
+  showWhatsappButton: true
+  primaryImage: /images/vehicle/hero.jpg

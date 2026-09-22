@@ -1,0 +1,16 @@
+make: Honda
+model: Civic
+version: null
+
+year:
+  manufacture: 2014
+  model: 2014
+
+price: 68000
+mileageKm: 147000
+location: Grande Aracaju/SE
+
+engine: null
+transmission: null
+fuel: null
+color: null
