@@ -170,6 +170,10 @@ p {
   margin-bottom: var(--space-7);
 }
 
+.section__header--compact {
+  margin-bottom: var(--space-5);
+}
+
 .section__header p {
   max-width: 60ch;
 }
@@ -225,6 +229,116 @@ p {
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1;
+}
+
+/* Vehicle overview: the photo leads, while the facts stay compact and easy to scan. */
+.hero-section {
+  padding-block: var(--space-4) var(--space-7);
+}
+
+.hero {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.hero__media {
+  overflow: hidden;
+  margin: 0;
+  border-radius: var(--radius-lg);
+  background: var(--color-media-placeholder);
+  aspect-ratio: 1672 / 941;
+}
+
+.hero__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero__content {
+  display: grid;
+  align-content: center;
+  gap: var(--space-4);
+  min-width: 0;
+  padding-inline: var(--space-1);
+}
+
+.hero__content h1 {
+  max-width: 14ch;
+}
+
+.hero__price {
+  color: var(--color-text);
+  font-size: clamp(2rem, 8vw, 3.25rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 750;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.hero__metadata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  color: var(--color-text);
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 650;
+}
+
+.hero__metadata span + span::before {
+  margin-right: var(--space-4);
+  color: var(--color-border-strong);
+  content: '•';
+}
+
+.hero__location {
+  display: grid;
+  gap: var(--space-1);
+  color: var(--color-text);
+}
+
+.hero__action {
+  width: 100%;
+  margin-top: var(--space-2);
+}
+
+.vehicle-details {
+  border-block: 1px solid var(--color-border);
+}
+
+.spec-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-border);
+}
+
+.spec-card {
+  display: grid;
+  min-width: 0;
+  align-content: start;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  background: var(--color-surface);
+}
+
+.spec-card dt {
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  line-height: 1.25;
+}
+
+.spec-card dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: var(--color-text);
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 650;
 }
 
 .type-metadata {
@@ -544,6 +658,14 @@ p {
     padding: var(--space-6);
   }
 
+  .hero__action {
+    width: fit-content;
+  }
+
+  .spec-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .showcase-grid--two,
   .showcase-grid--wide {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -559,6 +681,20 @@ p {
 }
 
 @media (min-width: 64rem) {
+  .hero {
+    grid-template-columns: minmax(0, 1.35fr) minmax(20rem, 0.65fr);
+    align-items: center;
+    gap: var(--space-7);
+  }
+
+  .hero-section {
+    padding-block: var(--space-7);
+  }
+
+  .spec-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
   .showcase-grid--wide {
     grid-template-columns: minmax(0, 1.1fr) minmax(18rem, 0.9fr);
   }

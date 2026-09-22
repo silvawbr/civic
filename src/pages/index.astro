@@ -3,15 +3,33 @@ import '../styles/global.css';
 import { content } from '../lib/content';
 import { publicUrl } from '../lib/site-url';
 
-const enabledSections = content.sections.filter((section) => section.enabled);
-const enabledGalleryImages = content.gallery.filter((image) => image.enabled);
-const enabledMaintenanceItems = content.maintenance.filter((item) => item.enabled);
-const formatPrice = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+const formatPrice = new Intl.NumberFormat('pt-BR', {
+  style: 'currency',
+  currency: 'BRL',
+  maximumFractionDigits: 0,
+});
 const canonicalUrl = publicUrl(content.site.publicBaseUrl);
 const social = content.social;
 const vehicleName = `${content.vehicle.make} ${content.vehicle.model}${content.vehicle.version ? ` ${content.vehicle.version}` : ''}`;
 const vehicleYears = `${content.vehicle.year.manufacture}/${content.vehicle.year.model}`;
 const vehicleMileage = `${content.vehicle.mileageKm.toLocaleString('pt-BR')} km`;
+const heroImage = content.hero.primaryImage;
+const heroIsEnabled = content.hero.enabled && content.sections.some((section) => section.id === 'hero' && section.enabled);
+const detailsAreEnabled = content.sections.some(
+  (section) => section.id === 'vehicle-details' && section.enabled,
+);
+const whatsappIsEnabled =
+  content.hero.showWhatsappButton && content.links.whatsapp.enabled && content.links.whatsapp.url;
+
+const specifications = [
+  { label: 'Ano/modelo', value: vehicleYears },
+  { label: 'Quilometragem', value: vehicleMileage },
+  { label: 'Versão', value: content.vehicle.version },
+  { label: 'Motor', value: content.vehicle.engine },
+  { label: 'Câmbio', value: content.vehicle.transmission },
+  { label: 'Combustível', value: content.vehicle.fuel },
+  { label: 'Cor', value: content.vehicle.color },
+].filter((specification): specification is { label: string; value: string } => Boolean(specification.value));
 ---
 
 <!doctype html>
@@ -20,6 +38,7 @@ const vehicleMileage = `${content.vehicle.mileageKm.toLocaleString('pt-BR')} km`
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="canonical" href={canonicalUrl} />
+    {heroIsEnabled && heroImage && <link rel="preload" as="image" href={heroImage} />}
     <title>{content.site.defaultMetadata.title}</title>
     <meta name="description" content={content.site.defaultMetadata.description} />
     <meta property="og:type" content="website" />
@@ -35,195 +54,72 @@ const vehicleMileage = `${content.vehicle.mileageKm.toLocaleString('pt-BR')} km`
   </head>
   <body>
     <main>
-      <header class="section showcase-intro">
-        <div class="container">
-          <div class="stack">
-            <p class="eyebrow">Block 3 · visual foundation</p>
-            <h1 class="type-page-title">A quiet, clear way to present one cared-for car.</h1>
-            <p class="lede">
-              This internal development showcase establishes the visual language for {content.site.title}:
-              editorial spacing, readable information, and photography-led surfaces.
-            </p>
-          </div>
-        </div>
-      </header>
+      {heroIsEnabled && (
+        <section class="hero-section" aria-labelledby="vehicle-title">
+          <div class="container hero">
+            {heroImage && (
+              <figure class="hero__media">
+                <img
+                  src={heroImage}
+                  alt={`${vehicleName} anunciado para venda`}
+                  width="1672"
+                  height="941"
+                  loading="eager"
+                  fetchpriority="high"
+                />
+              </figure>
+            )}
 
-      <section class="section section--muted" aria-labelledby="typography-heading">
-        <div class="container">
-          <div class="section__header">
-            <p class="eyebrow">01 · hierarchy</p>
-            <h2 id="typography-heading" class="type-section-title">Typography with room to breathe.</h2>
-            <p>
-              The type scale is deliberately compact on small screens and grows through fluid sizing.
-              Numeric values use tabular figures for quick comparison.
-            </p>
-          </div>
+            <div class="hero__content">
+              <p class="eyebrow">Anúncio particular</p>
+              <h1 id="vehicle-title" class="type-vehicle-title">{vehicleName}</h1>
 
-          <div class="showcase-grid showcase-grid--wide">
-            <article class="surface showcase-type-list" aria-label="Typography roles">
-              <div>
-                <small>Page title</small>
-                <span class="type-page-title">Honda Civic à venda</span>
-              </div>
-              <div>
-                <small>Section title</small>
-                <span class="type-section-title">Informação organizada</span>
-              </div>
-              <div>
-                <small>Body and helper text</small>
-                <span>Clareza para avaliar o carro com calma.</span>
-                <span class="helper">Textos curtos, contrastados e fáceis de escanear.</span>
-              </div>
-            </article>
+              {content.hero.showPrice && (
+                <p class="hero__price">{formatPrice.format(content.vehicle.price)}</p>
+              )}
 
-            <article class="surface showcase-specimen" aria-label="Vehicle information type specimen">
-              <div class="stack">
-                <p class="eyebrow">Vehicle specimen</p>
-                <p class="type-vehicle-title">{vehicleName}</p>
-                <p class="type-price">{formatPrice.format(content.vehicle.price)}</p>
-                <p class="type-metadata">{vehicleYears} · {vehicleMileage}</p>
-                <p class="caption">{content.vehicle.location}</p>
+              <div class="hero__metadata" aria-label="Ano e quilometragem">
+                {content.hero.showYear && <span>{vehicleYears}</span>}
+                {content.hero.showMileage && <span>{vehicleMileage}</span>}
               </div>
-              <dl class="meta-list">
-                <div>
-                  <dt>Base size</dt>
-                  <dd>16px</dd>
-                </div>
-                <div>
-                  <dt>Line height</dt>
-                  <dd>1.55</dd>
-                </div>
-              </dl>
-            </article>
-          </div>
-        </div>
-      </section>
 
-      <section class="section" aria-labelledby="tokens-heading">
-        <div class="container">
-          <div class="section__header">
-            <p class="eyebrow">02 · visual tokens</p>
-            <h2 id="tokens-heading" class="type-section-title">Neutral by default.</h2>
-            <p>
-              Semantic colors, spacing, radii, and borders live in the shared stylesheet so later sections
-              can stay focused on content rather than visual constants.
-            </p>
-          </div>
+              {content.hero.showLocation && (
+                <p class="hero__location">
+                  <span class="label">Localização</span>
+                  {content.vehicle.location}
+                </p>
+              )}
 
-          <div class="showcase-grid showcase-grid--two">
-            <article class="card">
-              <div class="card__header">
-                <h3>Color roles</h3>
-                <p>Photography supplies the color; the interface stays quiet.</p>
-              </div>
-              <div class="showcase-swatch-grid">
-                <div class="showcase-swatch showcase-swatch--background"><strong>Background</strong><span>--color-background</span></div>
-                <div class="showcase-swatch showcase-swatch--surface"><strong>Surface</strong><span>--color-surface</span></div>
-                <div class="showcase-swatch showcase-swatch--text"><strong>Text</strong><span>--color-text</span></div>
-                <div class="showcase-swatch showcase-swatch--muted"><strong>Muted</strong><span>--color-surface-muted</span></div>
-                <div class="showcase-swatch showcase-swatch--border"><strong>Border</strong><span>--color-border</span></div>
-                <div class="showcase-swatch showcase-swatch--accent"><strong>Accent</strong><span>--color-accent</span></div>
-              </div>
-            </article>
-
-            <article class="card">
-              <div class="card__header">
-                <h3>Actions</h3>
-                <p>Touch-friendly controls with visible focus and clear priority.</p>
-              </div>
-              <div class="cluster">
-                <button class="button button--primary" type="button">Primary action <span aria-hidden="true">→</span></button>
-                <button class="button button--secondary" type="button">Secondary</button>
-                <button class="button button--subtle" type="button">Subtle link</button>
-                <button class="button button--secondary" type="button" disabled>Disabled</button>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section section--muted" aria-labelledby="layout-heading">
-        <div class="container">
-          <div class="section__header">
-            <p class="eyebrow">03 · surfaces and media</p>
-            <h2 id="layout-heading" class="type-section-title">Structure for the story around the car.</h2>
-            <p>
-              Standard containers hold facts, narrow containers support reading, and full-width media can
-              create a visual pause without inventing a new layout pattern.
-            </p>
-          </div>
-
-          <div class="showcase-grid showcase-grid--wide">
-            <article class="card card--subtle">
-              <div class="card__header">
-                <h3>Quiet card surface</h3>
-                <p>Suitable for specifications, evidence, and supporting information.</p>
-              </div>
-              <dl class="meta-list">
-                <div>
-                  <dt>Container</dt>
-                  <dd>Standard</dd>
-                </div>
-                <div>
-                  <dt>Radius</dt>
-                  <dd>12px</dd>
-                </div>
-                <div>
-                  <dt>Border</dt>
-                  <dd>Subtle</dd>
-                </div>
-                <div>
-                  <dt>Shadow</dt>
-                  <dd>Minimal</dd>
-                </div>
-              </dl>
-            </article>
-
-            <figure>
-              <div class="media-frame media-frame--wide" role="img" aria-label="Reserved wide vehicle photography area">
-                <div class="media-placeholder">Wide photography area · 16:9</div>
-              </div>
-              <figcaption class="caption">Media frames reserve space, keep the crop predictable, and avoid layout shift.</figcaption>
-            </figure>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" aria-labelledby="diagnostics-heading">
-        <div class="container container--narrow">
-          <div class="section__header">
-            <p class="eyebrow">Development representation</p>
-            <h2 id="diagnostics-heading" class="type-section-title">Validated content model</h2>
-            <p>
-              This temporary page proves that YAML content is parsed, validated, normalized, and statically
-              rendered. It is not the final sale experience.
-            </p>
-          </div>
-
-          <div class="card">
-            <div class="diagnostic-grid">
-              <div>
-                <h3>Enabled sections</h3>
-                <ol>
-                  {enabledSections.map((section) => <li>{section.id} <span>({section.order})</span></li>)}
-                </ol>
-              </div>
-              <div>
-                <h3>Gallery entries</h3>
-                <p>{enabledGalleryImages.length} enabled / {content.gallery.length} configured</p>
-              </div>
-              <div>
-                <h3>Maintenance evidence</h3>
-                <p>{enabledMaintenanceItems.length} enabled / {content.maintenance.length} configured</p>
-              </div>
-              <div>
-                <h3>External links</h3>
-                <p>{Object.values(content.links).filter((link) => link.enabled).length} enabled</p>
-              </div>
+              {whatsappIsEnabled && (
+                <a class="button button--primary hero__action" href={content.links.whatsapp.url}>
+                  Falar pelo WhatsApp <span aria-hidden="true">→</span>
+                </a>
+              )}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
+
+      {detailsAreEnabled && (
+        <section class="section section--muted vehicle-details" aria-labelledby="details-heading">
+          <div class="container">
+            <div class="section__header section__header--compact">
+              <p class="eyebrow">Informações essenciais</p>
+              <h2 id="details-heading" class="type-section-title">Sobre o veículo</h2>
+              <p>Os principais dados para uma avaliação rápida e clara.</p>
+            </div>
+
+            <dl class="spec-grid">
+              {specifications.map((specification) => (
+                <div class="spec-card">
+                  <dt>{specification.label}</dt>
+                  <dd>{specification.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </section>
+      )}
     </main>
   </body>
 </html>

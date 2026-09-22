@@ -48,11 +48,11 @@ Advertisement content lives in `src/content/` and is loaded by `src/lib/content/
 - `maintenance.yaml`: separate care/maintenance evidence entries.
 - `links.yaml`: WhatsApp, OLX, and Webmotors settings.
 
-Schemas in `src/lib/content/schema.ts` validate each file before the normalized typed model reaches the page. The root page is only a development representation proving the boundary works; final UI sections belong to later blocks.
+Schemas in `src/lib/content/schema.ts` validate each file before the normalized typed model reaches the page. The root page renders the customer-facing Vehicle Overview; later blocks will add the remaining sale-site sections.
 
 Unknown section IDs, invalid primitive types, invalid supplied URLs, duplicate IDs, and malformed local image paths fail with contextual errors. Optional values normalize to `null` or empty arrays where appropriate.
 
-Place future assets in `public/images/vehicle/` and `public/images/maintenance/`. Final photos are intentionally not included yet.
+Place future assets in `public/images/vehicle/` and `public/images/maintenance/`. The configured Hero image lives at `public/images/vehicle/civic_hero.png`; gallery photos remain managed separately by `gallery.yaml`.
 
 ## Social-sharing preview
 
