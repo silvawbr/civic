@@ -53,6 +53,67 @@ assert.deepEqual(normalized.gallery.map((image) => image.src), [
 assert.ok(normalized.gallery.every((image) => image.src.startsWith('/images/vehicle/')));
 assert.ok(normalized.gallery.every((image) => image.width > 0 && image.height > 0));
 assert.deepEqual(normalized.maintenance.map((item) => item.id), ['tires']);
+assert.equal(normalized.maintenance[0].category, 'tires');
+assert.equal(normalized.maintenance[0].imageAlt, null);
+
+const maintenanceScenarios = structuredClone(raw) as RawContent;
+maintenanceScenarios.maintenance.items = [
+  {
+    id: 'battery',
+    enabled: true,
+    order: 20,
+    title: 'Bateria',
+    category: 'battery',
+    date: '2026-09-01',
+    mileageKm: 147000,
+    description: 'Bateria substituída.',
+    details: ['Registro sanitizado.'],
+    imageAlt: 'Etiqueta da bateria instalada',
+    images: ['/images/maintenance/battery.jpg'],
+  },
+  {
+    id: 'bodywork',
+    enabled: true,
+    order: 10,
+    title: 'Tratamento de corrosão',
+    category: null,
+    date: null,
+    mileageKm: null,
+    description: 'Tratamento de pontos de corrosão.',
+    details: [],
+    imageAlt: null,
+    images: [],
+  },
+  {
+    id: 'oil-change',
+    enabled: false,
+    order: 30,
+    title: 'Troca de óleo',
+    category: 'oil',
+    date: null,
+    mileageKm: null,
+    description: null,
+    details: [],
+    imageAlt: null,
+    images: [],
+  },
+];
+
+const normalizedMaintenanceScenarios = normalizeContent(maintenanceScenarios);
+assert.deepEqual(normalizedMaintenanceScenarios.maintenance.map((item) => item.id), [
+  'bodywork',
+  'battery',
+  'oil-change',
+]);
+assert.equal(normalizedMaintenanceScenarios.maintenance[1].images[0], '/images/maintenance/battery.jpg');
+assert.equal(normalizedMaintenanceScenarios.maintenance[2].enabled, false);
+assert.equal(normalizedMaintenanceScenarios.maintenance.filter((item) => item.enabled).length, 2);
+
+const noEnabledMaintenance = structuredClone(maintenanceScenarios) as RawContent;
+noEnabledMaintenance.maintenance.items.forEach((item) => {
+  item.enabled = false;
+});
+assert.equal(normalizeContent(noEnabledMaintenance).maintenance.filter((item) => item.enabled).length, 0);
 
 const maintenanceImageInGallery = structuredClone(raw) as RawContent;
 maintenanceImageInGallery.gallery.images[0].src = '/images/maintenance/oil-change.jpg';
@@ -61,6 +122,20 @@ expectValidationFailure(
   () => normalizeContent(maintenanceImageInGallery),
   'gallery\.images\.0\.src',
 );
+
+const maintenanceImageInVehicleDirectory = structuredClone(raw) as RawContent;
+maintenanceImageInVehicleDirectory.maintenance.items[0].images = ['/images/vehicle/civic_153424.jpg'];
+expectValidationFailure(
+  'vehicle image in maintenance evidence',
+  () => normalizeContent(maintenanceImageInVehicleDirectory),
+  'maintenance\.items\.0\.images\.0',
+);
+
+const validMaintenanceImage = structuredClone(raw) as RawContent;
+validMaintenanceImage.maintenance.items[0].images = ['/images/maintenance/oil-change.jpg'];
+assert.deepEqual(normalizeContent(validMaintenanceImage).maintenance[0].images, [
+  '/images/maintenance/oil-change.jpg',
+]);
 
 const missingOptionalValues = structuredClone(raw) as RawContent;
 delete (missingOptionalValues.vehicle as Partial<RawContent['vehicle']>).version;

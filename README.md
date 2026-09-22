@@ -52,7 +52,7 @@ Schemas in `src/lib/content/schema.ts` validate each file before the normalized 
 
 Unknown section IDs, invalid primitive types, invalid supplied URLs, duplicate IDs, and malformed local image paths fail with contextual errors. Optional values normalize to `null` or empty arrays where appropriate.
 
-Place future assets in `public/images/vehicle/` and `public/images/maintenance/`. The configured Hero image lives at `public/images/vehicle/civic_hero.png`; gallery photos remain managed separately by `gallery.yaml`.
+Place future assets in `public/images/vehicle/` and `public/images/maintenance/`. The configured Hero image lives at `public/images/vehicle/civic_hero.png`; gallery photos remain managed separately by `gallery.yaml`. Maintenance evidence may include receipts, service orders, warranty cards, or labels only after manually sanitizing them; do not publish CPF, addresses, RENAVAM, complete chassis numbers, payment information, or unnecessary phone numbers.
 
 ## Social-sharing preview
 

@@ -374,6 +374,102 @@ p {
   height: auto;
 }
 
+/* Maintenance evidence is quieter than the vehicle gallery and keeps facts close to each record. */
+.maintenance-section {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.maintenance-grid {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.maintenance-card {
+  display: grid;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.maintenance-card__media {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface-muted);
+}
+
+.maintenance-card__media--multiple {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.maintenance-card__image-link {
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-media-placeholder);
+}
+
+.maintenance-card__image-link img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.maintenance-card__body {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+  min-width: 0;
+  padding: var(--space-4);
+}
+
+.maintenance-card__title {
+  font-size: clamp(1.125rem, 2vw, 1.375rem);
+}
+
+.maintenance-card__metadata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-5);
+  margin: 0;
+}
+
+.maintenance-card__metadata > div {
+  display: grid;
+  gap: var(--space-1);
+  min-width: 8rem;
+}
+
+.maintenance-card__metadata dt {
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  line-height: 1.25;
+}
+
+.maintenance-card__metadata dd {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 0.9375rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 650;
+}
+
+.maintenance-card__description {
+  font-size: 0.9375rem;
+}
+
+.maintenance-card__details {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: var(--color-text-muted);
+  font-size: 0.9375rem;
+}
+
 .gallery-dialog {
   width: min(calc(100% - 2rem), 76rem);
   max-width: none;
@@ -795,6 +891,10 @@ p {
     gap: var(--space-4);
   }
 
+  .maintenance-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .gallery__item--featured {
     grid-column: span 2;
   }
@@ -829,6 +929,10 @@ p {
 
   .gallery__grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .maintenance-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 

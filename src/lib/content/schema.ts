@@ -14,6 +14,12 @@ const vehicleImagePath = z
   .min(1)
   .regex(/^\/images\/vehicle\/[^/?#]+$/, 'must be a local image path under /images/vehicle');
 
+const maintenanceImagePath = z
+  .string()
+  .trim()
+  .min(1)
+  .regex(/^\/images\/maintenance\/[^/?#]+$/, 'must be a local image path under /images/maintenance');
+
 const publicBaseUrl = z
   .string()
   .trim()
@@ -205,6 +211,7 @@ const maintenanceEntry = z
     enabled: z.boolean().default(true),
     order: z.number().int().nonnegative(),
     title: z.string().trim().min(1),
+    category: nullableText,
     date: z
       .string()
       .regex(/^\d{4}-\d{2}-\d{2}$/, 'must use YYYY-MM-DD format')
@@ -214,7 +221,8 @@ const maintenanceEntry = z
     mileageKm: nullableInteger,
     description: nullableText,
     details: z.array(z.string().trim().min(1)).optional().default([]),
-    images: z.array(localImagePath).optional().default([]),
+    imageAlt: nullableText,
+    images: z.array(maintenanceImagePath).optional().default([]),
   })
   .strict();
 

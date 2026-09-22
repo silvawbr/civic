@@ -3,8 +3,10 @@ items:
     enabled: true
     order: 10
     title: Pneus
+    category: tires
     date: null
     mileageKm: null
-    description: null
+    description: Michelin Primacy 4 e Dunlop, com desgaste baixo conforme informado pelo proprietário.
     details: []
+    imageAlt: null
     images: []

@@ -21,8 +21,24 @@ const detailsAreEnabled = content.sections.some(
 const galleryImages = content.gallery.filter((image) => image.enabled);
 const galleryIsEnabled =
   galleryImages.length > 0 && content.sections.some((section) => section.id === 'gallery' && section.enabled);
+const maintenanceItems = content.maintenance.filter((item) => item.enabled);
+const maintenanceIsEnabled =
+  maintenanceItems.length > 0 && content.sections.some((section) => section.id === 'maintenance' && section.enabled);
 const whatsappIsEnabled =
   content.hero.showWhatsappButton && content.links.whatsapp.enabled && content.links.whatsapp.url;
+
+const maintenanceDateFormatter = new Intl.DateTimeFormat('pt-BR', {
+  day: '2-digit',
+  month: '2-digit',
+  year: 'numeric',
+  timeZone: 'UTC',
+});
+
+const formatMaintenanceDate = (date: string | null) =>
+  date ? maintenanceDateFormatter.format(new Date(`${date}T00:00:00Z`)) : null;
+
+const formatMaintenanceMileage = (mileageKm: number | null) =>
+  mileageKm === null ? null : `${mileageKm.toLocaleString('pt-BR')} km`;
 
 const specifications = [
   { label: 'Ano/modelo', value: vehicleYears },
@@ -155,6 +171,76 @@ const specifications = [
                   </a>
                 </figure>
               ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {maintenanceIsEnabled && (
+        <section class="section section--muted maintenance-section" aria-labelledby="maintenance-heading">
+          <div class="container">
+            <div class="section__header">
+              <p class="eyebrow">Registros de cuidado</p>
+              <h2 id="maintenance-heading" class="type-section-title">Cuidados e manutenções recentes</h2>
+              <p>Alguns dos serviços e componentes recentes do veículo, com informações e registros quando disponíveis.</p>
+            </div>
+
+            <div class="maintenance-grid">
+              {maintenanceItems.map((item) => {
+                const metadata = [
+                  { label: 'Data', value: formatMaintenanceDate(item.date) },
+                  { label: 'Quilometragem', value: formatMaintenanceMileage(item.mileageKm) },
+                ].filter((entry): entry is { label: string; value: string } => Boolean(entry.value));
+                const evidenceAlt = item.imageAlt ?? item.title;
+
+                return (
+                  <article class="maintenance-card">
+                    {item.images.length > 0 && (
+                      <div class:list={['maintenance-card__media', { 'maintenance-card__media--multiple': item.images.length > 1 }]}>
+                        {item.images.map((image, index) => (
+                          <a
+                            class="maintenance-card__image-link"
+                            href={image}
+                            target="_blank"
+                            rel="noreferrer"
+                            aria-label={`Abrir evidência: ${evidenceAlt}${item.images.length > 1 ? ` (${index + 1})` : ''}`}
+                          >
+                            <img
+                              src={image}
+                              alt={`${evidenceAlt}${item.images.length > 1 ? ` (${index + 1})` : ''}`}
+                              loading="lazy"
+                              decoding="async"
+                            />
+                          </a>
+                        ))}
+                      </div>
+                    )}
+
+                    <div class="maintenance-card__body">
+                      <h3 class="maintenance-card__title">{item.title}</h3>
+
+                      {metadata.length > 0 && (
+                        <dl class="maintenance-card__metadata">
+                          {metadata.map((entry) => (
+                            <div>
+                              <dt>{entry.label}</dt>
+                              <dd>{entry.value}</dd>
+                            </div>
+                          ))}
+                        </dl>
+                      )}
+
+                      {item.description && <p class="maintenance-card__description">{item.description}</p>}
+
+                      {item.details.length > 0 && (
+                        <ul class="maintenance-card__details">
+                          {item.details.map((detail) => <li>{detail}</li>)}
+                        </ul>
+                      )}
+                    </div>
+                  </article>
+                );
+              })}
             </div>
           </div>
         </section>
