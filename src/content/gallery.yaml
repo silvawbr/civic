@@ -1,12 +1,65 @@
 images:
-  - id: front
-    src: /images/vehicle/front.jpg
-    alt: Honda Civic visto de frente
+  - id: front-opposite-angle
+    src: /images/vehicle/civic_153424.jpg
+    alt: Honda Civic visto pela dianteira e lateral oposta
     enabled: true
     order: 10
 
-  - id: rear
-    src: /images/vehicle/rear.jpg
-    alt: Honda Civic visto pela traseira
+    width: 1980
+    height: 1060
+
+  - id: rear-three-quarter
+    src: /images/vehicle/civic_153258.jpg
+    alt: Honda Civic visto pela traseira em três quartos
     enabled: true
     order: 20
+    width: 1985
+    height: 1120
+
+  - id: rear-opposite-side
+    src: /images/vehicle/civic_153240.jpg
+    alt: Honda Civic visto pela traseira e lateral oposta
+    enabled: true
+    order: 30
+    width: 1990
+    height: 1100
+
+  - id: rear-straight
+    src: /images/vehicle/civic_153225.jpg
+    alt: Honda Civic visto diretamente pela traseira
+    enabled: true
+    order: 40
+    width: 1152
+    height: 1060
+
+  - id: driver-dashboard
+    src: /images/vehicle/civic_155222.jpg
+    alt: Interior do Honda Civic visto pelo banco do motorista
+    enabled: true
+    order: 50
+    width: 1950
+    height: 1035
+
+  - id: passenger-cabin
+    src: /images/vehicle/civic_155334.jpg
+    alt: Interior do Honda Civic visto pelo lado do passageiro
+    enabled: true
+    order: 60
+    width: 1152
+    height: 1330
+
+  - id: rear-seats
+    src: /images/vehicle/civic_155233.jpg
+    alt: Bancos traseiros do Honda Civic
+    enabled: true
+    order: 70
+    width: 1152
+    height: 1470
+
+  - id: trunk
+    src: /images/vehicle/civic_155252.jpg
+    alt: Porta-malas do Honda Civic
+    enabled: true
+    order: 80
+    width: 1152
+    height: 1150

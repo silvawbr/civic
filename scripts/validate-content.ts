@@ -30,8 +30,37 @@ assert.deepEqual(normalized.sections.map((section) => section.id), [
   'maintenance',
   'transparency',
 ]);
-assert.deepEqual(normalized.gallery.map((image) => image.id), ['front', 'rear']);
+assert.deepEqual(normalized.gallery.map((image) => image.id), [
+  'front-opposite-angle',
+  'rear-three-quarter',
+  'rear-opposite-side',
+  'rear-straight',
+  'driver-dashboard',
+  'passenger-cabin',
+  'rear-seats',
+  'trunk',
+]);
+assert.deepEqual(normalized.gallery.map((image) => image.src), [
+  '/images/vehicle/civic_153424.jpg',
+  '/images/vehicle/civic_153258.jpg',
+  '/images/vehicle/civic_153240.jpg',
+  '/images/vehicle/civic_153225.jpg',
+  '/images/vehicle/civic_155222.jpg',
+  '/images/vehicle/civic_155334.jpg',
+  '/images/vehicle/civic_155233.jpg',
+  '/images/vehicle/civic_155252.jpg',
+]);
+assert.ok(normalized.gallery.every((image) => image.src.startsWith('/images/vehicle/')));
+assert.ok(normalized.gallery.every((image) => image.width > 0 && image.height > 0));
 assert.deepEqual(normalized.maintenance.map((item) => item.id), ['tires']);
+
+const maintenanceImageInGallery = structuredClone(raw) as RawContent;
+maintenanceImageInGallery.gallery.images[0].src = '/images/maintenance/oil-change.jpg';
+expectValidationFailure(
+  'maintenance image in main gallery',
+  () => normalizeContent(maintenanceImageInGallery),
+  'gallery\.images\.0\.src',
+);
 
 const missingOptionalValues = structuredClone(raw) as RawContent;
 delete (missingOptionalValues.vehicle as Partial<RawContent['vehicle']>).version;

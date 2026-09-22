@@ -8,6 +8,12 @@ const localImagePath = z
   .min(1)
   .regex(/^\/images\/(vehicle|maintenance)\/[^/?#]+$/, 'must be a local image path under /images/vehicle or /images/maintenance');
 
+const vehicleImagePath = z
+  .string()
+  .trim()
+  .min(1)
+  .regex(/^\/images\/vehicle\/[^/?#]+$/, 'must be a local image path under /images/vehicle');
+
 const publicBaseUrl = z
   .string()
   .trim()
@@ -165,10 +171,12 @@ export const SectionsConfigSchema = z
 const galleryEntry = z
   .object({
     id: z.string().trim().min(1).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'must be a stable kebab-case identifier'),
-    src: localImagePath,
+    src: vehicleImagePath,
     alt: z.string().trim().min(1),
     enabled: z.boolean().default(true),
     order: z.number().int().nonnegative(),
+    width: z.number().int().positive(),
+    height: z.number().int().positive(),
   })
   .strict();
 

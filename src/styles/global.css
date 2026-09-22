@@ -341,6 +341,117 @@ p {
   font-weight: 650;
 }
 
+/* Main vehicle gallery: compact on phones, editorial on larger screens. */
+.gallery-section {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.gallery__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.gallery__item {
+  min-width: 0;
+  margin: 0;
+}
+
+.gallery__item--featured {
+  grid-column: 1 / -1;
+}
+
+.gallery__link {
+  display: block;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-media-placeholder);
+}
+
+.gallery__link img {
+  width: 100%;
+  height: auto;
+}
+
+.gallery-dialog {
+  width: min(calc(100% - 2rem), 76rem);
+  max-width: none;
+  max-height: calc(100dvh - 2rem);
+  padding: 0;
+  border: 0;
+  color: var(--color-text);
+  background: transparent;
+}
+
+.gallery-dialog::backdrop {
+  background: rgb(23 25 22 / 78%);
+}
+
+.gallery-dialog__surface {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: var(--space-4);
+  max-height: calc(100dvh - 2rem);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-subtle);
+}
+
+.gallery-dialog__header,
+.gallery-dialog__controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.gallery-dialog__title {
+  color: var(--color-text);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.gallery-dialog__close {
+  flex: 0 0 auto;
+}
+
+.gallery-dialog__media {
+  display: grid;
+  min-height: 0;
+  place-items: center;
+  overflow: auto;
+  border-radius: var(--radius-md);
+  background: var(--color-surface-muted);
+}
+
+.gallery-dialog__media img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: calc(100dvh - 12rem);
+  object-fit: contain;
+}
+
+.gallery-dialog__controls {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+}
+
+.gallery-dialog__controls [data-gallery-next] {
+  justify-self: end;
+}
+
+.gallery-dialog__counter {
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 650;
+}
+
 .type-metadata {
   color: var(--color-text);
   font-size: 0.9375rem;
@@ -678,6 +789,15 @@ p {
   .diagnostic-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .gallery__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-4);
+  }
+
+  .gallery__item--featured {
+    grid-column: span 2;
+  }
 }
 
 @media (min-width: 64rem) {
@@ -704,6 +824,10 @@ p {
   }
 
   .diagnostic-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .gallery__grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }

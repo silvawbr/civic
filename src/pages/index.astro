@@ -18,6 +18,9 @@ const heroIsEnabled = content.hero.enabled && content.sections.some((section) =>
 const detailsAreEnabled = content.sections.some(
   (section) => section.id === 'vehicle-details' && section.enabled,
 );
+const galleryImages = content.gallery.filter((image) => image.enabled);
+const galleryIsEnabled =
+  galleryImages.length > 0 && content.sections.some((section) => section.id === 'gallery' && section.enabled);
 const whatsappIsEnabled =
   content.hero.showWhatsappButton && content.links.whatsapp.enabled && content.links.whatsapp.url;
 
@@ -120,6 +123,154 @@ const specifications = [
           </div>
         </section>
       )}
+
+      {galleryIsEnabled && (
+        <section class="section gallery-section" aria-labelledby="gallery-heading">
+          <div class="container">
+            <div class="section__header">
+              <p class="eyebrow">Conheça o carro</p>
+              <h2 id="gallery-heading" class="type-section-title">Fotos do veículo</h2>
+              <p>Uma visão do exterior, do interior e do porta-malas.</p>
+            </div>
+
+            <div class="gallery__grid">
+              {galleryImages.map((image, index) => (
+                <figure class:list={['gallery__item', { 'gallery__item--featured': index === 0 }]}>
+                  <a
+                    class="gallery__link"
+                    href={image.src}
+                    data-gallery-trigger
+                    data-gallery-index={index}
+                    aria-haspopup="dialog"
+                    aria-label={`Abrir foto: ${image.alt}`}
+                  >
+                    <img
+                      src={image.src}
+                      alt={image.alt}
+                      width={image.width}
+                      height={image.height}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </a>
+                </figure>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
     </main>
+
+    {galleryIsEnabled && (
+      <dialog class="gallery-dialog" data-gallery-dialog aria-labelledby="gallery-dialog-title">
+        <div class="gallery-dialog__surface">
+          <div class="gallery-dialog__header">
+            <p id="gallery-dialog-title" class="gallery-dialog__title">Visualização ampliada</p>
+            <button class="button button--secondary gallery-dialog__close" type="button" data-gallery-close>
+              Fechar
+            </button>
+          </div>
+
+          <div class="gallery-dialog__media">
+            <img data-gallery-dialog-image alt="" />
+          </div>
+
+          <div class="gallery-dialog__controls">
+            <button class="button button--secondary" type="button" data-gallery-previous>
+              Anterior
+            </button>
+            <span class="gallery-dialog__counter" data-gallery-counter aria-live="polite"></span>
+            <button class="button button--secondary" type="button" data-gallery-next>
+              Próxima
+            </button>
+          </div>
+        </div>
+      </dialog>
+    )}
   </body>
+
+  {galleryIsEnabled && (
+    <script>
+      const dialog = document.querySelector('[data-gallery-dialog]');
+      const triggers = Array.from(document.querySelectorAll('[data-gallery-trigger]'));
+
+      if (dialog instanceof HTMLDialogElement && triggers.length > 0 && typeof dialog.showModal === 'function') {
+        const dialogImage = dialog.querySelector<HTMLImageElement>('[data-gallery-dialog-image]');
+        const closeButton = dialog.querySelector<HTMLButtonElement>('[data-gallery-close]');
+        const previousButton = dialog.querySelector<HTMLButtonElement>('[data-gallery-previous]');
+        const nextButton = dialog.querySelector<HTMLButtonElement>('[data-gallery-next]');
+        const counter = dialog.querySelector<HTMLElement>('[data-gallery-counter]');
+
+        if (!dialogImage || !closeButton || !previousButton || !nextButton || !counter) {
+          throw new Error('Gallery dialog controls are incomplete.');
+        }
+
+        let currentIndex = 0;
+        let activeTrigger: HTMLAnchorElement | null = null;
+
+        const updateDialog = (index: number) => {
+          const trigger = triggers[index];
+          const image = trigger?.querySelector('img');
+
+          if (!(trigger instanceof HTMLAnchorElement) || !(image instanceof HTMLImageElement)) {
+            return;
+          }
+
+          currentIndex = index;
+          dialogImage.src = image.getAttribute('src') || trigger.href;
+          dialogImage.alt = image.alt;
+          counter.textContent = `${index + 1} / ${triggers.length}`;
+          previousButton.disabled = index === 0;
+          nextButton.disabled = index === triggers.length - 1;
+        };
+
+        triggers.forEach((trigger, index) => {
+          trigger.addEventListener('click', (event) => {
+            if (!(trigger instanceof HTMLAnchorElement)) {
+              return;
+            }
+
+            event.preventDefault();
+            activeTrigger = trigger;
+            updateDialog(index);
+            dialog.showModal();
+            closeButton.focus();
+          });
+        });
+
+        closeButton.addEventListener('click', () => dialog.close());
+        previousButton.addEventListener('click', () => {
+          if (currentIndex > 0) {
+            updateDialog(currentIndex - 1);
+          }
+        });
+        nextButton.addEventListener('click', () => {
+          if (currentIndex < triggers.length - 1) {
+            updateDialog(currentIndex + 1);
+          }
+        });
+
+        dialog.addEventListener('click', (event) => {
+          if (event.target === dialog) {
+            dialog.close();
+          }
+        });
+
+        dialog.addEventListener('keydown', (event) => {
+          if (event.key === 'ArrowLeft' && currentIndex > 0) {
+            updateDialog(currentIndex - 1);
+          }
+
+          if (event.key === 'ArrowRight' && currentIndex < triggers.length - 1) {
+            updateDialog(currentIndex + 1);
+          }
+        });
+
+        dialog.addEventListener('close', () => {
+          activeTrigger?.focus();
+          activeTrigger = null;
+        });
+      }
+    </script>
+  )}
 </html>
