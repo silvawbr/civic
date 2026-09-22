@@ -8,10 +8,46 @@ const localImagePath = z
   .min(1)
   .regex(/^\/images\/(vehicle|maintenance)\/[^/?#]+$/, 'must be a local image path under /images/vehicle or /images/maintenance');
 
+const publicBaseUrl = z
+  .string()
+  .trim()
+  .url()
+  .superRefine((value, context) => {
+    let parsed: URL;
+    try {
+      parsed = new URL(value);
+    } catch {
+      return;
+    }
+
+    if (!['http:', 'https:'].includes(parsed.protocol)) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'must use the http or https protocol',
+      });
+    }
+
+    if (parsed.username || parsed.password || parsed.search || parsed.hash) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'must be a public origin without credentials, query parameters, or a fragment',
+      });
+    }
+
+    if (parsed.pathname !== '/') {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'must not include a path beyond the origin',
+      });
+    }
+  })
+  .transform((value) => value.replace(/\/$/, ''));
+
 export const SiteConfigSchema = z
   .object({
     title: z.string().trim().min(1),
     language: z.string().trim().regex(/^[a-z]{2}-[A-Z]{2}$/, 'must be a BCP 47 language tag such as pt-BR'),
+    publicBaseUrl,
     defaultMetadata: z
       .object({
         title: z.string().trim().min(1),

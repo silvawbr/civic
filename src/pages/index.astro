@@ -1,11 +1,13 @@
 ---
 import '../styles/global.css';
 import { content } from '../lib/content';
+import { publicUrl } from '../lib/site-url';
 
 const enabledSections = content.sections.filter((section) => section.enabled);
 const enabledGalleryImages = content.gallery.filter((image) => image.enabled);
 const enabledMaintenanceItems = content.maintenance.filter((item) => item.enabled);
 const formatPrice = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+const canonicalUrl = publicUrl(content.site.publicBaseUrl);
 ---
 
 <!doctype html>
@@ -13,6 +15,7 @@ const formatPrice = new Intl.NumberFormat('pt-BR', { style: 'currency', currency
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
+    <link rel="canonical" href={canonicalUrl} />
     <title>{content.site.defaultMetadata.title}</title>
     <meta name="description" content={content.site.defaultMetadata.description} />
   </head>

@@ -15,6 +15,7 @@ const raw = readRawContent();
 
 assert.equal(normalized.vehicle.make, 'Honda');
 assert.equal(normalized.vehicle.price, 68000);
+assert.equal(normalized.site.publicBaseUrl, 'https://civic-se.vercel.app');
 assert.deepEqual(normalized.sections.map((section) => section.id), [
   'hero',
   'vehicle-details',
@@ -49,5 +50,20 @@ expectValidationFailure('unsupported section', () => normalizeContent(unsupporte
 const invalidUrl = structuredClone(raw) as unknown as { links: { olx: Record<string, unknown> } };
 invalidUrl.links.olx.url = 'not-a-url';
 expectValidationFailure('invalid configured URL', () => normalizeContent(invalidUrl), 'links\\.olx\\.url');
+
+const invalidPublicBaseUrl = structuredClone(raw) as unknown as { site: { publicBaseUrl: string } };
+invalidPublicBaseUrl.site.publicBaseUrl = 'civic-se';
+expectValidationFailure(
+  'invalid public base URL',
+  () => normalizeContent(invalidPublicBaseUrl),
+  'site\\.publicBaseUrl',
+);
+
+const publicBaseUrlWithTrailingSlash = structuredClone(raw) as RawContent;
+publicBaseUrlWithTrailingSlash.site.publicBaseUrl = 'https://civic-se.vercel.app/';
+assert.equal(
+  normalizeContent(publicBaseUrlWithTrailingSlash).site.publicBaseUrl,
+  'https://civic-se.vercel.app',
+);
 
 console.log('Content validation checks passed.');

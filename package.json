@@ -6,18 +6,21 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "generate:qr": "node --import tsx scripts/generate-qr.ts",
     "preview": "astro preview",
     "typecheck": "astro check",
     "validate:content": "node --import tsx scripts/validate-content.ts"
   },
   "dependencies": {
     "astro": "^5.15.0",
+    "qrcode": "^1.5.4",
     "yaml": "^2.8.1",
     "zod": "^3.25.76"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
     "@types/node": "^22.10.1",
+    "@types/qrcode": "^1.5.6",
     "tsx": "^4.19.3",
     "typescript": "^5.9.2"
   }

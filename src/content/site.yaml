@@ -1,5 +1,6 @@
 title: Honda Civic à venda
 language: pt-BR
+publicBaseUrl: https://civic-se.vercel.app
 defaultMetadata:
   title: Honda Civic à venda
   description: Informações públicas sobre o Honda Civic anunciado para venda.

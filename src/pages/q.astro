@@ -1,0 +1,25 @@
+---
+import { content } from '../lib/content';
+import { publicUrl, VEHICLE_QR_PATH } from '../lib/site-url';
+
+// Permanent semantic boundary for the physical vehicle QR Code.
+const destination = '/';
+const canonicalUrl = publicUrl(content.site.publicBaseUrl, VEHICLE_QR_PATH);
+---
+
+<!doctype html>
+<html lang={content.site.language}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="refresh" content={`0;url=${destination}`} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta name="robots" content="noindex" />
+    <title>{content.site.defaultMetadata.title}</title>
+  </head>
+  <body>
+    <p>
+      Redirecionando para o anúncio. <a href={destination}>Abrir o anúncio</a>
+    </p>
+  </body>
+</html>
