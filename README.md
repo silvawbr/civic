@@ -46,6 +46,7 @@ Advertisement content lives in `src/content/` and is loaded by `src/lib/content/
 - `sections.yaml`: supported section visibility/order plus Hero options.
 - `gallery.yaml`: main vehicle-gallery entries.
 - `maintenance.yaml`: separate care/maintenance evidence entries.
+- `transparency.yaml`: concise, ordered context about the private sale and current vehicle condition. Items can be enabled, disabled, edited, and reordered independently. The optional `{mileageKm}` token is replaced with the canonical mileage from `vehicle.yaml` when the page is rendered.
 - `links.yaml`: WhatsApp, OLX, and Webmotors settings.
 
 Schemas in `src/lib/content/schema.ts` validate each file before the normalized typed model reaches the page. The root page renders the customer-facing Vehicle Overview; later blocks will add the remaining sale-site sections.

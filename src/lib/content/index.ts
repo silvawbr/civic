@@ -8,6 +8,7 @@ export type {
   SectionsConfig,
   SiteConfig,
   SiteContent,
+  TransparencyConfig,
   VehicleConfig,
 } from './schema';
 

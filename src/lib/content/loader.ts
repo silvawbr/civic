@@ -10,6 +10,7 @@ import {
   RawContentSchema,
   SectionsConfigSchema,
   SiteConfigSchema,
+  TransparencyConfigSchema,
   VehicleConfigSchema,
   type RawContent,
   type SocialMetadata,
@@ -24,6 +25,7 @@ const contentFiles = [
   { key: 'sections', filename: 'sections.yaml', schema: SectionsConfigSchema },
   { key: 'gallery', filename: 'gallery.yaml', schema: GalleryConfigSchema },
   { key: 'maintenance', filename: 'maintenance.yaml', schema: MaintenanceConfigSchema },
+  { key: 'transparency', filename: 'transparency.yaml', schema: TransparencyConfigSchema },
   { key: 'links', filename: 'links.yaml', schema: LinksConfigSchema },
 ] as const;
 
@@ -94,6 +96,10 @@ export function normalizeContent(raw: unknown, source = 'content configuration')
     hero: result.data.sections.hero,
     gallery: sortByOrder(result.data.gallery.images),
     maintenance: sortByOrder(result.data.maintenance.items),
+    transparency: {
+      ...result.data.transparency,
+      items: sortByOrder(result.data.transparency.items),
+    },
     links: result.data.links,
   };
 }

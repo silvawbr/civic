@@ -55,6 +55,46 @@ assert.ok(normalized.gallery.every((image) => image.width > 0 && image.height > 
 assert.deepEqual(normalized.maintenance.map((item) => item.id), ['tires']);
 assert.equal(normalized.maintenance[0].category, 'tires');
 assert.equal(normalized.maintenance[0].imageAlt, null);
+assert.equal(normalized.transparency.enabled, true);
+assert.deepEqual(normalized.transparency.items.map((item) => item.id), [
+  'sale',
+  'mileage',
+  'conservation',
+  'recent-care',
+  'tires-and-battery',
+  'bodywork-and-paint',
+]);
+assert.equal(normalized.transparency.items[1].text.includes('{mileageKm}'), true);
+
+const transparencyScenarios = structuredClone(raw) as RawContent;
+transparencyScenarios.transparency.items = [
+  {
+    id: 'sale',
+    enabled: true,
+    order: 20,
+    title: 'Sobre a venda',
+    text: 'Venda particular.',
+  },
+  {
+    id: 'ownership',
+    enabled: false,
+    order: 10,
+    title: 'Uso',
+    text: 'Informação opcional.',
+  },
+];
+const normalizedTransparencyScenarios = normalizeContent(transparencyScenarios);
+assert.deepEqual(normalizedTransparencyScenarios.transparency.items.map((item) => item.id), ['ownership', 'sale']);
+assert.deepEqual(
+  normalizedTransparencyScenarios.transparency.items.filter((item) => item.enabled).map((item) => item.id),
+  ['sale'],
+);
+
+const noEnabledTransparency = structuredClone(transparencyScenarios) as RawContent;
+noEnabledTransparency.transparency.items.forEach((item) => {
+  item.enabled = false;
+});
+assert.equal(normalizeContent(noEnabledTransparency).transparency.items.filter((item) => item.enabled).length, 0);
 
 const maintenanceScenarios = structuredClone(raw) as RawContent;
 maintenanceScenarios.maintenance.items = [

@@ -24,6 +24,11 @@ const galleryIsEnabled =
 const maintenanceItems = content.maintenance.filter((item) => item.enabled);
 const maintenanceIsEnabled =
   maintenanceItems.length > 0 && content.sections.some((section) => section.id === 'maintenance' && section.enabled);
+const transparencyItems = content.transparency.items.filter((item) => item.enabled);
+const transparencyIsEnabled =
+  content.transparency.enabled &&
+  transparencyItems.length > 0 &&
+  content.sections.some((section) => section.id === 'transparency' && section.enabled);
 const whatsappIsEnabled =
   content.hero.showWhatsappButton && content.links.whatsapp.enabled && content.links.whatsapp.url;
 const configuredPersistentActions = [
@@ -65,6 +70,8 @@ const formatMaintenanceDate = (date: string | null) =>
 
 const formatMaintenanceMileage = (mileageKm: number | null) =>
   mileageKm === null ? null : `${mileageKm.toLocaleString('pt-BR')} km`;
+
+const formatTransparencyText = (text: string) => text.replaceAll('{mileageKm}', vehicleMileage);
 
 const specifications = [
   { label: 'Ano/modelo', value: vehicleYears },
@@ -267,6 +274,27 @@ const specifications = [
                   </article>
                 );
               })}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {transparencyIsEnabled && (
+        <section class="section section--muted transparency-section" aria-labelledby="transparency-heading">
+          <div class="container">
+            <div class="section__header transparency-section__header">
+              <p class="eyebrow">Informações do proprietário</p>
+              <h2 id="transparency-heading" class="type-section-title">{content.transparency.title}</h2>
+              {content.transparency.introduction && <p>{formatTransparencyText(content.transparency.introduction)}</p>}
+            </div>
+
+            <div class="transparency-grid">
+              {transparencyItems.map((item) => (
+                <article class="transparency-card">
+                  <h3 class="transparency-card__title">{item.title}</h3>
+                  <p class="transparency-card__text">{formatTransparencyText(item.text)}</p>
+                </article>
+              ))}
             </div>
           </div>
         </section>

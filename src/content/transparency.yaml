@@ -1,0 +1,40 @@
+enabled: true
+title: Transparência sobre o veículo
+introduction: Venda particular diretamente pelo proprietário. As informações abaixo resumem o contexto atual do veículo e os cuidados relatados.
+
+items:
+  - id: sale
+    enabled: true
+    order: 10
+    title: Sobre a venda
+    text: Venda particular diretamente pelo proprietário.
+
+  - id: mileage
+    enabled: true
+    order: 20
+    title: Quilometragem
+    text: 'A quilometragem atual informada no anúncio é {mileageKm}.'
+
+  - id: conservation
+    enabled: true
+    order: 30
+    title: Conservação
+    text: A apresentação do veículo considera o uso e a idade do carro. A avaliação presencial continua sendo importante para o comprador.
+
+  - id: recent-care
+    enabled: true
+    order: 40
+    title: Cuidados recentes
+    text: Ao longo do uso, o veículo teve principalmente as manutenções normais e preventivas relatadas pelo proprietário.
+
+  - id: tires-and-battery
+    enabled: true
+    order: 50
+    title: Pneus e bateria
+    text: Pneus Michelin Primacy 4 e Dunlop, com desgaste baixo conforme informado pelo proprietário. A bateria foi substituída recentemente, conforme informado pelo proprietário.
+
+  - id: bodywork-and-paint
+    enabled: true
+    order: 60
+    title: Chaparia e pintura
+    text: Antes da venda, foram tratados pontos de corrosão e realizados serviços de chaparia e recuperação da pintura.

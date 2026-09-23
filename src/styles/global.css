@@ -523,6 +523,41 @@ p {
   font-size: 0.9375rem;
 }
 
+/* Transparency stays editorial and factual, with a quieter treatment than the gallery. */
+.transparency-section {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.transparency-section__header {
+  margin-bottom: var(--space-6);
+}
+
+.transparency-grid {
+  display: grid;
+  gap: var(--space-4);
+  max-width: 64rem;
+}
+
+.transparency-card {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+  min-width: 0;
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.transparency-card__title {
+  font-size: clamp(1.125rem, 2vw, 1.375rem);
+}
+
+.transparency-card__text {
+  max-width: 48ch;
+  font-size: 0.9375rem;
+}
+
 .gallery-dialog {
   width: min(calc(100% - 2rem), 76rem);
   max-width: none;
@@ -974,6 +1009,10 @@ p {
   }
 
   .maintenance-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .transparency-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 

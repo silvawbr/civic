@@ -245,6 +245,38 @@ export const MaintenanceConfigSchema = z
     });
   });
 
+const transparencyEntry = z
+  .object({
+    id: z.string().trim().min(1).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'must be a stable kebab-case identifier'),
+    enabled: z.boolean().default(true),
+    order: z.number().int().nonnegative(),
+    title: z.string().trim().min(1),
+    text: z.string().trim().min(1),
+  })
+  .strict();
+
+export const TransparencyConfigSchema = z
+  .object({
+    enabled: z.boolean().default(true),
+    title: z.string().trim().min(1),
+    introduction: nullableText,
+    items: z.array(transparencyEntry),
+  })
+  .strict()
+  .superRefine((value, context) => {
+    const seen = new Set<string>();
+    value.items.forEach((item, index) => {
+      if (seen.has(item.id)) {
+        context.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['items', index, 'id'],
+          message: `duplicate transparency item id "${item.id}"`,
+        });
+      }
+      seen.add(item.id);
+    });
+  });
+
 const externalLink = z
   .object({
     enabled: z.boolean().default(false),
@@ -280,6 +312,7 @@ export const RawContentSchema = z
     sections: SectionsConfigSchema,
     gallery: GalleryConfigSchema,
     maintenance: MaintenanceConfigSchema,
+    transparency: TransparencyConfigSchema,
     links: LinksConfigSchema,
   })
   .strict();
@@ -290,6 +323,7 @@ export type VehicleConfig = z.infer<typeof VehicleConfigSchema>;
 export type SectionsConfig = z.infer<typeof SectionsConfigSchema>;
 export type GalleryConfig = z.infer<typeof GalleryConfigSchema>;
 export type MaintenanceConfig = z.infer<typeof MaintenanceConfigSchema>;
+export type TransparencyConfig = z.infer<typeof TransparencyConfigSchema>;
 export type LinksConfig = z.infer<typeof LinksConfigSchema>;
 export type RawContent = z.infer<typeof RawContentSchema>;
 export type HeroConfig = z.infer<typeof HeroConfigSchema>;
@@ -309,5 +343,6 @@ export type SiteContent = {
   hero: SectionsConfig['hero'];
   gallery: GalleryConfig['images'];
   maintenance: MaintenanceConfig['items'];
+  transparency: TransparencyConfig;
   links: LinksConfig;
 };
