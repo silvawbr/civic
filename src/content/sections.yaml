@@ -12,7 +12,7 @@ sections:
     order: 30
 
   - id: maintenance
-    enabled: true
+    enabled: false
     order: 40
 
   - id: transparency

@@ -1,6 +1,6 @@
 make: Honda
 model: Civic
-version: null
+version: LXR
 
 year:
   manufacture: 2014
@@ -8,7 +8,7 @@ year:
 
 price: 68000
 mileageKm: 147000
-location: Grande Aracaju/SE
+location: Barra dos Coqueiros/SE
 
 engine: null
 transmission: null

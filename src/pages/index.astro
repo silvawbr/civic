@@ -30,8 +30,15 @@ const transparencyIsEnabled =
   content.transparency.enabled &&
   transparencyItems.length > 0 &&
   content.sections.some((section) => section.id === 'transparency' && section.enabled);
+const whatsappUrl = content.links.whatsapp.url
+  ? (() => {
+      const url = new URL(content.links.whatsapp.url);
+      url.searchParams.set('text', content.links.whatsapp.message);
+      return url.toString();
+    })()
+  : null;
 const whatsappIsEnabled =
-  content.hero.showWhatsappButton && content.links.whatsapp.enabled && content.links.whatsapp.url;
+  content.hero.showWhatsappButton && content.links.whatsapp.enabled && whatsappUrl;
 const configuredPersistentActions = [
   {
     id: 'olx',
@@ -49,7 +56,7 @@ const configuredPersistentActions = [
   },
   {
     id: 'whatsapp',
-    href: content.links.whatsapp.enabled ? content.links.whatsapp.url : null,
+    href: content.links.whatsapp.enabled ? whatsappUrl : null,
     label: 'Falar pelo WhatsApp',
     shortLabel: 'WhatsApp',
     variant: 'primary',
@@ -145,7 +152,7 @@ const specifications = [
               )}
 
               {whatsappIsEnabled && (
-                <a class="button button--primary hero__action" href={content.links.whatsapp.url} data-action="whatsapp">
+                <a class="button button--primary hero__action" href={whatsappUrl} data-action="whatsapp">
                   Falar pelo WhatsApp <span aria-hidden="true">→</span>
                 </a>
               )}

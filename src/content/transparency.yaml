@@ -4,7 +4,7 @@ introduction: Venda particular diretamente pelo proprietário. As informações 
 
 items:
   - id: sale
-    enabled: true
+    enabled: false
     order: 10
     title: Sobre a venda
     text: Venda particular diretamente pelo proprietário.
@@ -12,29 +12,29 @@ items:
   - id: mileage
     enabled: true
     order: 20
-    title: Quilometragem
-    text: 'A quilometragem atual informada no anúncio é {mileageKm}.'
+    title: Depoimento
+    text: Sou apaixonado por esse carro. Se você já teve um Honda, já sabe. Se você ainda não teve essa experiência, vai se surpreender.
 
   - id: conservation
     enabled: true
     order: 30
-    title: Conservação
-    text: A apresentação do veículo considera o uso e a idade do carro. A avaliação presencial continua sendo importante para o comprador.
+    title: Licenciamento
+    text: Licenciamento 2026 já pago.
 
   - id: recent-care
     enabled: true
     order: 40
-    title: Cuidados recentes
-    text: Ao longo do uso, o veículo teve principalmente as manutenções normais e preventivas relatadas pelo proprietário.
+    title: Bateria 
+    text: Bateria Heliar H60HD substituída recentemente.
 
   - id: tires-and-battery
     enabled: true
     order: 50
-    title: Pneus e bateria
-    text: Pneus Michelin Primacy 4 e Dunlop, com desgaste baixo conforme informado pelo proprietário. A bateria foi substituída recentemente, conforme informado pelo proprietário.
+    title: Pneus
+    text: Pneus Michelin Primacy 4 (Dianteiros) e Dunlop Enasave EC300+ (Traseiros) em ótimo estado.
 
   - id: bodywork-and-paint
-    enabled: true
+    enabled: false
     order: 60
     title: Chaparia e pintura
     text: Antes da venda, foram tratados pontos de corrosão e realizados serviços de chaparia e recuperação da pintura.

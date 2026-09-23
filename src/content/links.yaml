@@ -1,6 +1,6 @@
 whatsapp:
-  enabled: false
-  url: null
+  enabled: true
+  url: https://wa.me/5579981263524
   message: Olá. Vi o anúncio do Honda Civic e gostaria de mais informações.
 
 olx:
