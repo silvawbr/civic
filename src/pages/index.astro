@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import { content } from '../lib/content';
 import { publicUrl } from '../lib/site-url';
+import SiteAnalytics from '../components/SiteAnalytics.astro';
 
 const formatPrice = new Intl.NumberFormat('pt-BR', {
   style: 'currency',
@@ -103,6 +104,7 @@ const specifications = [
     <meta name="twitter:title" content={social.title} />
     <meta name="twitter:description" content={social.description} />
     {social.image && <meta name="twitter:image" content={social.image} />}
+    <SiteAnalytics />
   </head>
   <body>
     <main class:list={{ 'page--with-persistent-actions': persistentActions.length > 0 }}>
@@ -143,7 +145,7 @@ const specifications = [
               )}
 
               {whatsappIsEnabled && (
-                <a class="button button--primary hero__action" href={content.links.whatsapp.url}>
+                <a class="button button--primary hero__action" href={content.links.whatsapp.url} data-action="whatsapp">
                   Falar pelo WhatsApp <span aria-hidden="true">→</span>
                 </a>
               )}

@@ -25,7 +25,7 @@ Public URL: https://civic-se.vercel.app/
 QR payload: https://civic-se.vercel.app/q
 ```
 
-`/q` is the permanent semantic entry point for the physical vehicle QR Code. It statically redirects visitors to `/` and intentionally remains available as a future route-level boundary for `source = car_qr`. It does not require analytics, a backend, or a database.
+`/q` is the permanent semantic entry point for the physical vehicle QR Code. It statically redirects visitors to `/?utm_source=car_qr`, preserving the printed URL while making QR attribution explicit. It does not require a backend or a database.
 
 Generate the committed print-source asset with:
 
@@ -36,6 +36,30 @@ npm run generate:qr
 This writes `public/qr/vehicle-sale.svg` from the configured public URL and verifies the output by deterministic re-encoding. The QR uses error-correction level H, a four-module quiet zone, black modules, and a white background. It contains no logo or decorative styling. The generated SVG is deterministic and contains no timestamps or random metadata.
 
 After the physical sticker is printed, the `/q` URL and QR payload must not change. Changes to price, mileage, photos, description, maintenance, WhatsApp, OLX, Webmotors, or the future analytics provider must not require QR regeneration. Physical scan testing through the perforated material remains a manual sticker-production check.
+
+## Traffic and conversion analytics
+
+The site uses Vercel Web Analytics through `@vercel/analytics` and the compatible `@astrojs/vercel` static adapter. Native page views are provided by Vercel's Astro integration; the site does not emit a second custom `page_view` event. Custom events are viewed in the Vercel project dashboard under Analytics. Vercel custom events require a Pro or Enterprise plan, and UTM dimensions in the dashboard require Web Analytics Plus or Enterprise.
+
+The controlled traffic-source contract is:
+
+- `car_qr`: `https://civic-se.vercel.app/q` → `/?utm_source=car_qr`
+- `olx`: `https://civic-se.vercel.app/?utm_source=olx`
+- `webmotors`: `https://civic-se.vercel.app/?utm_source=webmotors`
+- `instagram`: `https://civic-se.vercel.app/?utm_source=instagram`
+- `direct/share`: `/` or any absent/unknown `utm_source` value
+
+Only these normalized values are used by project-emitted conversion events. The current URL query is used for attribution during the page lifecycle; no cookies, `localStorage`, or visitor IDs are added.
+
+Conversion events are emitted from the stable `data-action` values:
+
+- `data-action="whatsapp"` → `click_whatsapp`
+- `data-action="olx"` → `click_olx`
+- `data-action="webmotors"` → `click_webmotors`
+
+Each conversion event contains only the normalized `source` property. Tracking is best-effort and never prevents the destination anchor from navigating. No phone numbers, message contents, names, arbitrary query-string values, fingerprinting, custom backend, or site dashboard are added.
+
+The provider component uses its default automatic environment mode: local development uses the provider's development behavior, while deployed data is available in Vercel's environment-specific Analytics views for preview and production deployments. Enable Web Analytics in the Vercel project and deploy before expecting provider-side ingestion.
 
 ## Content model
 

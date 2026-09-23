@@ -12,6 +12,8 @@
     "validate:content": "node --import tsx scripts/validate-content.ts"
   },
   "dependencies": {
+    "@astrojs/vercel": "^8.2.11",
+    "@vercel/analytics": "^2.0.1",
     "astro": "^5.15.0",
     "qrcode": "^1.5.4",
     "yaml": "^2.8.1",
