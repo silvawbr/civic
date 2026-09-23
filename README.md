@@ -13,6 +13,8 @@ npm run build
 npm run generate:qr
 ```
 
+Dependency policy: determine the latest stable release from the live package registry and use it by default; keep a package below latest only for a documented compatibility reason, and consult official migration or release documentation before retaining an older major.
+
 Astro is configured for static output, so the generated `dist/` directory is compatible with Vercel's Astro deployment detection.
 
 ## Permanent public URL and vehicle QR contract

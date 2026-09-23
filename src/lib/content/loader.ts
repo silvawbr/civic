@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { parse } from 'yaml';
-import { type ZodIssue } from 'zod';
+import type { $ZodIssue } from 'zod/v4/core';
 import { publicUrl } from '../site-url';
 import {
   GalleryConfigSchema,
@@ -30,7 +30,7 @@ const contentFiles = [
 ] as const;
 
 export class ContentValidationError extends Error {
-  constructor(source: string, issues: ZodIssue[]) {
+  constructor(source: string, issues: $ZodIssue[]) {
     const details = issues.map((issue) => {
       const path = issue.path.length > 0 ? issue.path.join('.') : 'configuration';
       return `- ${path}: ${issue.message}`;

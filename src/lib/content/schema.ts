@@ -23,7 +23,7 @@ const maintenanceImagePath = z
 const publicBaseUrl = z
   .string()
   .trim()
-  .url()
+  .pipe(z.url())
   .superRefine((value, context) => {
     let parsed: URL;
     try {
@@ -34,21 +34,21 @@ const publicBaseUrl = z
 
     if (!['http:', 'https:'].includes(parsed.protocol)) {
       context.addIssue({
-        code: z.ZodIssueCode.custom,
+        code: 'custom',
         message: 'must use the http or https protocol',
       });
     }
 
     if (parsed.username || parsed.password || parsed.search || parsed.hash) {
       context.addIssue({
-        code: z.ZodIssueCode.custom,
+        code: 'custom',
         message: 'must be a public origin without credentials, query parameters, or a fragment',
       });
     }
 
     if (parsed.pathname !== '/') {
       context.addIssue({
-        code: z.ZodIssueCode.custom,
+        code: 'custom',
         message: 'must not include a path beyond the origin',
       });
     }
@@ -59,7 +59,7 @@ const socialImage = z.string().trim().min(1).superRefine((value, context) => {
   if (value.startsWith('/')) {
     if (value.startsWith('//') || value.includes('\\')) {
       context.addIssue({
-        code: z.ZodIssueCode.custom,
+        code: 'custom',
         message: 'must be a public path beginning with a single slash',
       });
     }
@@ -71,7 +71,7 @@ const socialImage = z.string().trim().min(1).superRefine((value, context) => {
     parsed = new URL(value);
   } catch {
     context.addIssue({
-      code: z.ZodIssueCode.custom,
+      code: 'custom',
       message: 'must be an absolute http or https URL or a relative public path',
     });
     return;
@@ -79,7 +79,7 @@ const socialImage = z.string().trim().min(1).superRefine((value, context) => {
 
   if (!['http:', 'https:'].includes(parsed.protocol)) {
     context.addIssue({
-      code: z.ZodIssueCode.custom,
+      code: 'custom',
       message: 'must use the http or https protocol',
     });
   }
@@ -105,7 +105,12 @@ export const SiteConfigSchema = z
         description: z.string().trim().min(1),
       })
       .strict(),
-    social: SocialConfigSchema.optional().default({}),
+    social: SocialConfigSchema.default({
+      title: null,
+      description: null,
+      image: null,
+      imageAlt: null,
+    }),
     location: z.string().trim().min(1),
     description: nullableText,
   })
@@ -122,7 +127,7 @@ export const VehicleConfigSchema = z
         model: z.number().int().min(1886).max(2100),
       })
       .strict(),
-    price: z.number().finite().nonnegative(),
+    price: z.number().nonnegative(),
     mileageKm: z.number().int().nonnegative(),
     location: z.string().trim().min(1),
     engine: nullableText,
@@ -165,7 +170,7 @@ export const SectionsConfigSchema = z
     value.sections.forEach((section, index) => {
       if (seen.has(section.id)) {
         context.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           path: ['sections', index, 'id'],
           message: `duplicate section id "${section.id}"`,
         });
@@ -196,7 +201,7 @@ export const GalleryConfigSchema = z
     value.images.forEach((image, index) => {
       if (seen.has(image.id)) {
         context.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           path: ['images', index, 'id'],
           message: `duplicate gallery image id "${image.id}"`,
         });
@@ -236,7 +241,7 @@ export const MaintenanceConfigSchema = z
     value.items.forEach((item, index) => {
       if (seen.has(item.id)) {
         context.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           path: ['items', index, 'id'],
           message: `duplicate maintenance item id "${item.id}"`,
         });
@@ -268,7 +273,7 @@ export const TransparencyConfigSchema = z
     value.items.forEach((item, index) => {
       if (seen.has(item.id)) {
         context.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           path: ['items', index, 'id'],
           message: `duplicate transparency item id "${item.id}"`,
         });
@@ -280,7 +285,7 @@ export const TransparencyConfigSchema = z
 const externalLink = z
   .object({
     enabled: z.boolean().default(false),
-    url: z.string().url().nullable().optional().default(null),
+    url: z.string().trim().pipe(z.url()).nullable().optional().default(null),
   })
   .strict();
 
@@ -297,7 +302,7 @@ export const LinksConfigSchema = z
     for (const [name, link] of Object.entries(value)) {
       if (link.enabled && link.url === null) {
         context.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: 'custom',
           path: [name, 'url'],
           message: 'is required when this link is enabled',
         });
