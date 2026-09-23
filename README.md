@@ -39,29 +39,33 @@ This writes `public/qr/vehicle-sale.svg` from the configured public URL and veri
 
 After the physical sticker is printed, the `/q` URL and QR payload must not change. Changes to price, mileage, photos, description, maintenance, WhatsApp, OLX, Webmotors, or the future analytics provider must not require QR regeneration. Physical scan testing through the perforated material remains a manual sticker-production check.
 
-## Traffic and conversion analytics
+## Traffic analytics
 
-The site uses Vercel Web Analytics through `@vercel/analytics` and the compatible `@astrojs/vercel` static adapter. Native page views are provided by Vercel's Astro integration; the site does not emit a second custom `page_view` event. Custom events are viewed in the Vercel project dashboard under Analytics. Vercel custom events require a Pro or Enterprise plan, and UTM dimensions in the dashboard require Web Analytics Plus or Enterprise.
+Provider: Vercel Web Analytics.
 
-The controlled traffic-source contract is:
+Integration: `@vercel/analytics`, using the official Astro component import `@vercel/analytics/astro`. The component is rendered in `src/components/SiteAnalytics.astro` on both `/` and the permanent `/q` QR entry route. Vercel automatically collects visitors and page views after deployment; use the Vercel dashboard for the built-in traffic dimensions available to the current project, including pages/routes, referrers, countries, devices, browsers, and operating systems.
 
-- `car_qr`: `https://civic-se.vercel.app/q` → `/?utm_source=car_qr`
-- `olx`: `https://civic-se.vercel.app/?utm_source=olx`
-- `webmotors`: `https://civic-se.vercel.app/?utm_source=webmotors`
-- `instagram`: `https://civic-se.vercel.app/?utm_source=instagram`
-- `direct/share`: `/` or any absent/unknown `utm_source` value
+Current limitations:
 
-Only these normalized values are used by project-emitted conversion events. The current URL query is used for attribution during the page lifecycle; no cookies, `localStorage`, or visitor IDs are added.
+- Custom conversion events are unavailable on the current plan and are not emitted by the project.
+- Detailed UTM reporting is available only where supported by the current Vercel plan (Web Analytics Plus or Enterprise according to Vercel's current documentation).
+- Referrers are observational: external sites may omit or strip referrer information.
 
-Conversion events are emitted from the stable `data-action` values:
+The standardized campaign URLs remain available for future plan support:
 
-- `data-action="whatsapp"` → `click_whatsapp`
-- `data-action="olx"` → `click_olx`
-- `data-action="webmotors"` → `click_webmotors`
+- `https://civic-se.vercel.app/?utm_source=olx`
+- `https://civic-se.vercel.app/?utm_source=webmotors`
+- `https://civic-se.vercel.app/?utm_source=instagram`
 
-Each conversion event contains only the normalized `source` property. Tracking is best-effort and never prevents the destination anchor from navigating. No phone numbers, message contents, names, arbitrary query-string values, fingerprinting, custom backend, or site dashboard are added.
+The physical QR URL remains permanently `https://civic-se.vercel.app/q`. Its dedicated `/q` document includes the Analytics component before the existing static redirect to `/?utm_source=car_qr`, so production Vercel route attribution can be verified after deployment; it does not require QR regeneration. The `utm_source=car_qr` query is retained as a future-ready convention, not as a claim of current dashboard reporting.
 
-The provider component uses its default automatic environment mode: local development uses the provider's development behavior, while deployed data is available in Vercel's environment-specific Analytics views for preview and production deployments. Enable Web Analytics in the Vercel project and deploy before expecting provider-side ingestion.
+Future analytics-ready hooks are preserved on the conversion links:
+
+- `data-action="whatsapp"`
+- `data-action="olx"`
+- `data-action="webmotors"`
+
+No cookies, custom visitor IDs, `localStorage` tracking IDs, fingerprinting, buyer identity tracking, phone/message analytics, or alternate analytics provider are added. Analytics is best-effort and never blocks rendering or navigation.
 
 ## Content model
 

@@ -1,6 +1,7 @@
 ---
 import { content } from '../lib/content';
 import { publicUrl, VEHICLE_QR_PATH } from '../lib/site-url';
+import SiteAnalytics from '../components/SiteAnalytics.astro';
 
 // Permanent semantic boundary for the physical vehicle QR Code.
 const destination = '/?utm_source=car_qr';
@@ -12,6 +13,7 @@ const canonicalUrl = publicUrl(content.site.publicBaseUrl, VEHICLE_QR_PATH);
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
+    <SiteAnalytics />
     <meta http-equiv="refresh" content={`0;url=${destination}`} />
     <link rel="canonical" href={canonicalUrl} />
     <meta name="robots" content="noindex" />
