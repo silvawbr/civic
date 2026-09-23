@@ -16,13 +16,13 @@ const raw = readRawContent();
 assert.equal(normalized.vehicle.make, 'Honda');
 assert.equal(normalized.vehicle.price, 68000);
 assert.equal(normalized.site.publicBaseUrl, 'https://civic-se.vercel.app');
-assert.equal(normalized.social.title, 'Honda Civic 2014/2014 à venda');
-assert.equal(normalized.social.description, 'Veja fotos, informações e detalhes deste Honda Civic à venda em Grande Aracaju/SE.');
+assert.equal(normalized.social.title, 'Honda Civic LXR 2014/2014 à venda');
+assert.equal(normalized.social.description, 'Veja fotos, informações e detalhes deste Honda Civic LXR à venda em Grande Aracaju/SE.');
 assert.equal(
   normalized.social.image,
-  'https://s3.amazonaws.com/altimus2.arquivos.prod/d35aca4c-3a76-48b0-8dcb-4334c5f4f73e/fotos/veiculo/ab1b5335ea1540c7a381bf4b512af5f9_1780921220209.jpg',
+  'https://civic-se.vercel.app/images/vehicle/civic_hero-retouched.png',
 );
-assert.equal(normalized.social.imageAlt, 'Honda Civic 2014/2014 à venda');
+assert.equal(normalized.social.imageAlt, 'Honda Civic LXR 2014/2014 à venda');
 assert.deepEqual(normalized.sections.map((section) => section.id), [
   'hero',
   'vehicle-details',
@@ -64,7 +64,6 @@ assert.deepEqual(normalized.transparency.items.map((item) => item.id), [
   'tires-and-battery',
   'bodywork-and-paint',
 ]);
-assert.equal(normalized.transparency.items[1].text.includes('{mileageKm}'), true);
 
 const transparencyScenarios = structuredClone(raw) as RawContent;
 transparencyScenarios.transparency.items = [

@@ -83,10 +83,10 @@ Schemas in `src/lib/content/schema.ts` validate each file before the normalized 
 
 Unknown section IDs, invalid primitive types, invalid supplied URLs, duplicate IDs, and malformed local image paths fail with contextual errors. Optional values normalize to `null` or empty arrays where appropriate.
 
-Place future assets in `public/images/vehicle/` and `public/images/maintenance/`. The configured Hero image lives at `public/images/vehicle/civic_hero.png`; gallery photos remain managed separately by `gallery.yaml`. Maintenance evidence may include receipts, service orders, warranty cards, or labels only after manually sanitizing them; do not publish CPF, addresses, RENAVAM, complete chassis numbers, payment information, or unnecessary phone numbers.
+Place future assets in `public/images/vehicle/` and `public/images/maintenance/`. The configured Hero image lives at `public/images/vehicle/civic_hero-retouched.png`; gallery photos remain managed separately by `gallery.yaml`. Maintenance evidence may include receipts, service orders, warranty cards, or labels only after manually sanitizing them; do not publish CPF, addresses, RENAVAM, complete chassis numbers, payment information, or unnecessary phone numbers.
 
 ## Social-sharing preview
 
 The optional `site.social` section in `src/content/site.yaml` controls the root page's Open Graph and Twitter/X metadata. `title` and `description` fall back to `site.defaultMetadata`; `image` and `imageAlt` are optional. Absolute `http`/`https` image URLs and relative public paths such as `/images/social/vehicle-share.jpg` are supported. Relative paths are resolved against `site.publicBaseUrl` before rendering.
 
-The preferred future project-owned asset is `public/images/social/vehicle-share.jpg`, with recommended dimensions of 1200x630, JPG or PNG format, and an approximate 1.91:1 aspect ratio. The current configuration uses a temporary remote vehicle image; it should be replaced in configuration later without changing the page metadata implementation.
+The project-owned social-sharing asset is the local `public/images/vehicle/civic_hero-retouched.png`. Relative paths are resolved against `site.publicBaseUrl` before rendering, so Open Graph and Twitter/X metadata expose the deployed site origin rather than an external image host.
