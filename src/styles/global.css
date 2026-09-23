@@ -44,6 +44,9 @@
   --section-space: clamp(3.5rem, 9vw, 7rem);
   --control-height: 2.75rem;
   --shadow-subtle: 0 0.5rem 1.5rem rgb(23 25 22 / 4%);
+  --persistent-actions-reserved-space: calc(
+    var(--control-height) + var(--space-2) + var(--space-2) + 1px + env(safe-area-inset-bottom)
+  );
 }
 
 * {
@@ -301,6 +304,56 @@ p {
 .hero__action {
   width: 100%;
   margin-top: var(--space-2);
+}
+
+/* Persistent conversion stays quiet and useful: the primary action is visually distinct, while every
+   available destination keeps its own semantic link. */
+.page--with-persistent-actions {
+  padding-bottom: var(--persistent-actions-reserved-space);
+}
+
+.persistent-actions {
+  position: fixed;
+  z-index: 10;
+  inset-inline: 0;
+  bottom: 0;
+  padding: var(--space-2) var(--gutter) calc(var(--space-2) + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface);
+  box-shadow: 0 -0.5rem 1.5rem rgb(23 25 22 / 5%);
+}
+
+.persistent-actions__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-2);
+}
+
+.persistent-actions--count-2 .persistent-actions__inner {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.persistent-actions--count-2.persistent-actions--has-primary .persistent-actions__inner {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+}
+
+.persistent-actions--count-3.persistent-actions--has-primary .persistent-actions__inner {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.35fr);
+}
+
+.persistent-actions__action {
+  width: 100%;
+  min-width: 0;
+  padding-inline: var(--space-1);
+  white-space: nowrap;
+}
+
+.persistent-actions__label--short {
+  display: inline;
+}
+
+.persistent-actions__label--long {
+  display: none;
 }
 
 .vehicle-details {
@@ -860,6 +913,12 @@ p {
 }
 
 @media (min-width: 40rem) {
+  :root {
+    --persistent-actions-reserved-space: calc(
+      var(--control-height) + var(--space-2) + var(--space-2) + 2rem + 1px + env(safe-area-inset-bottom)
+    );
+  }
+
   .surface,
   .card {
     padding: var(--space-6);
@@ -867,6 +926,29 @@ p {
 
   .hero__action {
     width: fit-content;
+  }
+
+  .persistent-actions {
+    right: auto;
+    left: 50%;
+    width: min(calc(100% - 2rem), 44rem);
+    padding: var(--space-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    transform: translateX(-50%);
+    box-shadow: var(--shadow-subtle);
+  }
+
+  .persistent-actions__label--short {
+    display: none;
+  }
+
+  .persistent-actions__label--long {
+    display: inline;
+  }
+
+  .persistent-actions__action {
+    padding-inline: 1rem;
   }
 
   .spec-grid {

@@ -26,6 +26,32 @@ const maintenanceIsEnabled =
   maintenanceItems.length > 0 && content.sections.some((section) => section.id === 'maintenance' && section.enabled);
 const whatsappIsEnabled =
   content.hero.showWhatsappButton && content.links.whatsapp.enabled && content.links.whatsapp.url;
+const configuredPersistentActions = [
+  {
+    id: 'olx',
+    href: content.links.olx.enabled ? content.links.olx.url : null,
+    label: 'Ver na OLX',
+    shortLabel: 'OLX',
+    variant: 'secondary',
+  },
+  {
+    id: 'webmotors',
+    href: content.links.webmotors.enabled ? content.links.webmotors.url : null,
+    label: 'Ver na Webmotors',
+    shortLabel: 'Webmotors',
+    variant: 'secondary',
+  },
+  {
+    id: 'whatsapp',
+    href: content.links.whatsapp.enabled ? content.links.whatsapp.url : null,
+    label: 'Falar pelo WhatsApp',
+    shortLabel: 'WhatsApp',
+    variant: 'primary',
+  },
+];
+const persistentActions = configuredPersistentActions.filter(
+  (action): action is (typeof configuredPersistentActions)[number] & { href: string } => Boolean(action.href),
+);
 
 const maintenanceDateFormatter = new Intl.DateTimeFormat('pt-BR', {
   day: '2-digit',
@@ -72,7 +98,7 @@ const specifications = [
     {social.image && <meta name="twitter:image" content={social.image} />}
   </head>
   <body>
-    <main>
+    <main class:list={{ 'page--with-persistent-actions': persistentActions.length > 0 }}>
       {heroIsEnabled && (
         <section class="hero-section" aria-labelledby="vehicle-title">
           <div class="container hero">
@@ -246,6 +272,37 @@ const specifications = [
         </section>
       )}
     </main>
+
+    {persistentActions.length > 0 && (
+      <aside
+        class:list={[
+          'persistent-actions',
+          `persistent-actions--count-${persistentActions.length}`,
+          { 'persistent-actions--has-primary': persistentActions.some((action) => action.variant === 'primary') },
+        ]}
+        aria-label="Ações disponíveis"
+      >
+        <div class="persistent-actions__inner container">
+          {persistentActions.map((action) => (
+            <a
+              class:list={['button', `button--${action.variant}`, 'persistent-actions__action']}
+              href={action.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-action={action.id}
+              aria-label={action.label}
+            >
+              <span class="persistent-actions__label persistent-actions__label--long" aria-hidden="true">
+                {action.label}
+              </span>
+              <span class="persistent-actions__label persistent-actions__label--short" aria-hidden="true">
+                {action.shortLabel}
+              </span>
+            </a>
+          ))}
+        </div>
+      </aside>
+    )}
 
     {galleryIsEnabled && (
       <dialog class="gallery-dialog" data-gallery-dialog aria-labelledby="gallery-dialog-title">
