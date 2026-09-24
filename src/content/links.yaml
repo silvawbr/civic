@@ -4,8 +4,8 @@ whatsapp:
   message: Olá. Vi o anúncio do Honda Civic e gostaria de mais informações.
 
 olx:
-  enabled: false
-  url: null
+  enabled: true
+  url: https://se.olx.com.br/sergipe/autos-e-pecas/carros-vans-e-utilitarios/honda-civic-sedan-lxr-2-0-flexone-16v-aut-4p-2014-1538452458
 
 webmotors:
   enabled: false
