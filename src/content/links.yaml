@@ -8,5 +8,5 @@ olx:
   url: https://se.olx.com.br/sergipe/autos-e-pecas/carros-vans-e-utilitarios/honda-civic-sedan-lxr-2-0-flexone-16v-aut-4p-2014-1538452458
 
 webmotors:
-  enabled: false
-  url: null
+  enabled: true
+  url: https://www.webmotors.com.br/comprar/honda/civic/20-lxr-16v-flex-4p-automatico/4-portas/2014/80193277
