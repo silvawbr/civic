@@ -20,7 +20,7 @@ assert.equal(normalized.social.title, 'Honda Civic LXR 2014/2014 à venda');
 assert.equal(normalized.social.description, 'Veja fotos, informações e detalhes deste Honda Civic LXR à venda em Grande Aracaju/SE.');
 assert.equal(
   normalized.social.image,
-  'https://civic-se.vercel.app/images/social/vehicle-share-v2.png',
+  'https://civic-se.vercel.app/images/social/vehicle-share-v3.jpg',
 );
 assert.equal(normalized.social.imageAlt, 'Honda Civic LXR 2014/2014 à venda');
 assert.deepEqual(normalized.sections.map((section) => section.id), [
