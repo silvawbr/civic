@@ -89,4 +89,4 @@ Place future assets in `public/images/vehicle/` and `public/images/maintenance/`
 
 The optional `site.social` section in `src/content/site.yaml` controls the root page's Open Graph and Twitter/X metadata. `title` and `description` fall back to `site.defaultMetadata`; `image` and `imageAlt` are optional. Absolute `http`/`https` image URLs and relative public paths such as `/images/social/vehicle-share.jpg` are supported. Relative paths are resolved against `site.publicBaseUrl` before rendering.
 
-The project-owned social-sharing asset is the local `public/images/vehicle/civic_hero-retouched.png`. Relative paths are resolved against `site.publicBaseUrl` before rendering, so Open Graph and Twitter/X metadata expose the deployed site origin rather than an external image host.
+The project-owned social-sharing asset is the local `public/images/social/vehicle-share-v2.png`. Relative paths are resolved against `site.publicBaseUrl` before rendering, so Open Graph and Twitter/X metadata expose the deployed site origin rather than an external image host.
